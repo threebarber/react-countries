@@ -14,6 +14,16 @@ const CountryDisplay = (props) => {
   return <li>{props.countryName}</li>;
 };
 
+const CountryInfo = (props) => {
+  return (
+    <div>
+      <p>{"Capital: " + props.capital}</p>
+      <p>{"Area: " + props.area}</p>
+      <img src={props.image} />
+    </div>
+  )
+};
+
 const App = () => {
   /*setting states*/
   const [countries, setCountries] = useState([]);
@@ -52,6 +62,11 @@ const App = () => {
           <p>Too many results (10+)</p>
         )}
       </ul>
+
+      {filteredCountries.length == 1 &&
+    <CountryInfo capital={filteredCountries[0].capital} area={filteredCountries[0].area} image={filteredCountries[0].flags.png} languages={filteredCountries[0].languages} />
+      }
+
     </div>
   );
 };
