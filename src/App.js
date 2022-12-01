@@ -10,14 +10,9 @@ const UserInput = (props) => {
   );
 };
 
-
 const CountryDisplay = (props) => {
-  return (
-    <li>
-      {props.countryName}
-    </li>
-  )
-}
+  return <li>{props.countryName}</li>;
+};
 
 const App = () => {
   /*setting states*/
@@ -47,18 +42,27 @@ const App = () => {
         ))}
         </ul>*/}
 
-        <ul>
+      <ul>
         {countries
           .filter((country) =>
             country.name.common.toLowerCase().includes(newSearch.toLowerCase())
-          )
-          .map((filteredCountry) => (
-            <CountryDisplay
-              countryName={filteredCountry.name.common}
-            />
-          ))}
-        </ul>
+          ).length <= 10 
 
+          ?
+
+          countries
+          .filter((country) =>
+            country.name.common.toLowerCase().includes(newSearch.toLowerCase())
+          ).map((filteredCountry) => (
+            <CountryDisplay countryName={filteredCountry.name.common} />
+          ))
+
+          :
+
+          <p>Too many results (10+)</p>
+        
+        }
+      </ul>
     </div>
   );
 };
