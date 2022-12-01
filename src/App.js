@@ -17,11 +17,17 @@ const CountryDisplay = (props) => {
 const App = () => {
   /*setting states*/
   const [countries, setCountries] = useState([]);
+  const [filteredCountries,setFilteredCountries] = useState([]);
   const [newSearch, setNewSearch] = useState("");
 
   const handleSearchChange = (event) => {
     console.log(event.target.value);
     setNewSearch(event.target.value);
+    setFilteredCountries(
+      countries.filter((country) =>
+          country.name.common.toLowerCase().includes(newSearch.toLowerCase())
+        )
+    )
   };
 
   useEffect(() => {
@@ -36,32 +42,15 @@ const App = () => {
   return (
     <div>
       <UserInput label="Search" onChange={handleSearchChange} />
-      {/*<ul>
-        {countries.map((country) => (
-          <li>{country.name.common}</li>
-        ))}
-        </ul>*/}
 
       <ul>
-        {countries
-          .filter((country) =>
-            country.name.common.toLowerCase().includes(newSearch.toLowerCase())
-          ).length <= 10 
-
-          ?
-
-          countries
-          .filter((country) =>
-            country.name.common.toLowerCase().includes(newSearch.toLowerCase())
-          ).map((filteredCountry) => (
-            <CountryDisplay countryName={filteredCountry.name.common} />
-          ))
-
-          :
-
+        {filteredCountries.length <= 10 ? (
+          filteredCountries.map((filteredCountry) => (
+              <CountryDisplay countryName={filteredCountry.name.common} />
+            ))
+        ) : (
           <p>Too many results (10+)</p>
-        
-        }
+        )}
       </ul>
     </div>
   );
