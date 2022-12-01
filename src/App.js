@@ -11,23 +11,66 @@ const UserInput = (props) => {
 };
 
 const CountryDisplay = (props) => {
-  return <li>{props.countryName}</li>;
+  return (
+
+    <div>
+
+      <p>{props.countryName}</p>
+      
+
+      <div><p>{"Capital: " + props.capital}</p>
+      <p>{"Area: " + props.area}</p>
+      <img src={props.image} /></div>
+
+    </div>
+
+
+  )
 };
 
 const CountryInfo = (props) => {
+
+  const [showInfo, setShowInfo] = useState(false);
+
+  
+  const handleShowButtonClick = () => {
+    console.log("Show button clicked");
+    
+    showInfo ? setShowInfo(false) : setShowInfo(true)
+
+    console.log("Set show to " + showInfo);
+  };
+
+
   return (
     <div>
-      <p>{"Capital: " + props.capital}</p>
+
+      <p>{props.countryName}</p>
+
+    <button onClick={handleShowButtonClick}>Show info</button>
+
+      {showInfo ? 
+      
+
+      <div><p>{"Capital: " + props.capital}</p>
       <p>{"Area: " + props.area}</p>
-      <img src={props.image} />
+      <img src={props.image} /></div>
+
+      :
+
+      null
+    
+    }
+
+
     </div>
-  )
+  );
 };
 
 const App = () => {
   /*setting states*/
   const [countries, setCountries] = useState([]);
-  const [filteredCountries,setFilteredCountries] = useState([]);
+  const [filteredCountries, setFilteredCountries] = useState([]);
   const [newSearch, setNewSearch] = useState("");
 
   const handleSearchChange = (event) => {
@@ -35,9 +78,9 @@ const App = () => {
     setNewSearch(event.target.value);
     setFilteredCountries(
       countries.filter((country) =>
-          country.name.common.toLowerCase().includes(newSearch.toLowerCase())
-        )
-    )
+        country.name.common.toLowerCase().includes(newSearch.toLowerCase())
+      )
+    );
   };
 
   useEffect(() => {
@@ -56,17 +99,22 @@ const App = () => {
       <ul>
         {filteredCountries.length <= 10 ? (
           filteredCountries.map((filteredCountry) => (
-              <CountryDisplay countryName={filteredCountry.name.common} />
-            ))
+            <CountryInfo countryName={filteredCountry.name.common} capital={filteredCountry.capital} area={filteredCountry.area} image={filteredCountry.flags.png} />
+          ))
         ) : (
           <p>Too many results (10+)</p>
         )}
       </ul>
 
-      {filteredCountries.length == 1 &&
-    <CountryInfo capital={filteredCountries[0].capital} area={filteredCountries[0].area} image={filteredCountries[0].flags.png} languages={filteredCountries[0].languages} />
-      }
-
+      {filteredCountries.length == 1 && (
+        <CountryDisplay
+          countryName={filteredCountries[0].name.common}
+          capital={filteredCountries[0].capital}
+          area={filteredCountries[0].area}
+          image={filteredCountries[0].flags.png}
+          languages={filteredCountries[0].languages}
+        />
+      )}
     </div>
   );
 };
