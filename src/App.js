@@ -10,6 +10,15 @@ const UserInput = (props) => {
   );
 };
 
+
+const CountryDisplay = (props) => {
+  return (
+    <li>
+      {props.countryName}
+    </li>
+  )
+}
+
 const App = () => {
   /*setting states*/
   const [countries, setCountries] = useState([]);
@@ -32,11 +41,24 @@ const App = () => {
   return (
     <div>
       <UserInput label="Search" onChange={handleSearchChange} />
-      <ul>
+      {/*<ul>
         {countries.map((country) => (
           <li>{country.name.common}</li>
         ))}
-      </ul>
+        </ul>*/}
+
+        <ul>
+        {countries
+          .filter((country) =>
+            country.name.common.toLowerCase().includes(newSearch.toLowerCase())
+          )
+          .map((filteredCountry) => (
+            <CountryDisplay
+              countryName={filteredCountry.name.common}
+            />
+          ))}
+        </ul>
+
     </div>
   );
 };
